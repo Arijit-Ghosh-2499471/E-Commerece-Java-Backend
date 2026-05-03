@@ -1,6 +1,5 @@
 package com.cts.ecommerce.service.impl;
 
-
 import com.cts.ecommerce.entity.CartItem;
 import com.cts.ecommerce.entity.ShoppingCart;
 import com.cts.ecommerce.repository.CartItemRepository;
@@ -16,13 +15,11 @@ public class CartItemServiceImpl implements CartItemService {
     private final ShoppingCartRepository shoppingCartRepository;
     private final CartItemRepository cartItemRepository;
 
-    public CartItemServiceImpl(
-            ShoppingCartRepository shoppingCartRepository,
-            CartItemRepository cartItemRepository) {
+    public CartItemServiceImpl(ShoppingCartRepository shoppingCartRepository,
+                               CartItemRepository cartItemRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.cartItemRepository = cartItemRepository;
     }
-
 
     @Override
     public void addItem(int userId, int productId, int quantity) {
@@ -30,8 +27,7 @@ public class CartItemServiceImpl implements CartItemService {
         ShoppingCart cart = shoppingCartRepository.findActiveCartByUserId(userId);
 
         if (cart == null) {
-            throw new IllegalStateException(
-                    "Active cart does not exist for user " + userId);
+            throw new IllegalStateException("Active cart does not exist for user " + userId);
         }
 
         int cartId = cart.getShoppingCartId();
@@ -41,14 +37,9 @@ public class CartItemServiceImpl implements CartItemService {
         if (item == null) {
             cartItemRepository.addItem(cartId, productId, quantity);
         } else {
-            cartItemRepository.updateQuantity(
-                    cartId,
-                    productId,
-                    item.getQuantity() + quantity
-            );
+            cartItemRepository.updateQuantity(cartId, productId, item.getQuantity() + quantity);
         }
     }
-
 
     @Override
     public void removeItem(int userId, int productId, int quantity) {
@@ -63,13 +54,12 @@ public class CartItemServiceImpl implements CartItemService {
 
         if (item == null) return;
 
-        int remainingQty = item.getQuantity() - quantity;
+        int remainingQuantity = item.getQuantity() - quantity;
 
-        if (remainingQty <= 0) {
+        if (remainingQuantity <= 0) {
             cartItemRepository.removeItem(cartId, productId);
         } else {
-            cartItemRepository.updateQuantity(
-                    cartId, productId, remainingQty);
+            cartItemRepository.updateQuantity(cartId, productId, remainingQuantity);
         }
     }
 
