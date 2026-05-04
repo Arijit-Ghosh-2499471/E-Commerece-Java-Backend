@@ -1,9 +1,14 @@
 package com.cts.ecommerce.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
+
 @Setter
 @Getter
+@NoArgsConstructor
+@Component
 public class Order {
     private int orderId;
     private int userId;
@@ -12,10 +17,6 @@ public class Order {
     private String orderStatus;
     private String paymentStatus;
     private int shoppingCartId;
-
-    public Order(){
-
-    }
 
     public Order(int userId, double totalPrice, int shippingAddressId, String orderStatus, String paymentStatus, int shoppingCartId) {
         this.userId = userId;
@@ -26,16 +27,17 @@ public class Order {
         this.shoppingCartId = shoppingCartId;
     }
 
-    @Override
-    public String toString() {
-        return "Order{" +
-                "orderId=" + orderId +
-                ", userId=" + userId +
-                ", totalPrice=" + totalPrice +
-                ", shippingAddressId=" + shippingAddressId +
-                ", orderStatus='" + orderStatus + '\'' +
-                ", paymentStatus='" + paymentStatus + '\'' +
-                ", shoppingCartId=" + shoppingCartId +
-                '}';
-    }
+//
+//    @Override
+//    public String toString() {
+//        return "Order{" +
+//                "orderId=" + orderId +
+//                ", userId=" + userId +
+//                ", totalPrice=" + totalPrice +
+//                ", shippingAddressId=" + shippingAddressId +
+//                ", orderStatus='" + orderStatus + '\'' +
+//                ", paymentStatus='" + paymentStatus + '\'' +
+//                ", shoppingCartId=" + shoppingCartId +
+//                '}';
+//    }
 }

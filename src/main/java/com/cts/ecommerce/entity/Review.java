@@ -1,24 +1,26 @@
 package com.cts.ecommerce.entity;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import org.springframework.stereotype.Component;
+
+@Getter
+@Setter
+@NoArgsConstructor
+@Component
 public class Review {
 
-    private int ReviewId;
-    private int UserId;
-    private int ProductId;
-    private int Rating;
-    private String ReviewDescription;
+    private int reviewId;
+    private int userId;
+    private int productId;
+    private int rating;
+    private String reviewDescription;
 
-    public int getReviewId() { return ReviewId; }
-    public void setReviewId(int reviewId) { ReviewId = reviewId; }
-
-    public int getUserId() { return UserId; }
-    public void setUserId(int userId) { UserId = userId; }
-
-    public int getProductId() { return ProductId; }
-    public void setProductId(int productId) { ProductId = productId; }
-
-    public int getRating() { return Rating; }
-    public void setRating(int rating) { Rating = rating; }
-
-    public String getReviewDescription() { return ReviewDescription; }
-    public void setReviewDescription(String reviewDescription) { ReviewDescription = reviewDescription; }
+    public Review(int userId, int productId, int rating, String reviewDescription) {
+        this.userId = userId;
+        this.productId = productId;
+        this.rating = rating;
+        this.reviewDescription = reviewDescription;
+    }
 }
