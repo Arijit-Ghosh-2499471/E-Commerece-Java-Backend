@@ -1,4 +1,5 @@
 /**
+ * This is branch Arijit
  * This is Ritivs branch
  * This is aayush branch
  */
@@ -17,6 +18,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 import java.util.Scanner;
 
+/**
+ * Main entry point for the E-Commerce Platform application.
+ */
 @SpringBootApplication
 public class EcommerceApplication {
 
@@ -128,5 +132,4 @@ public class EcommerceApplication {
 			}
 		}
 	}
-
 }
