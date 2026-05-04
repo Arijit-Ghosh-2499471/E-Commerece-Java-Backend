@@ -1,6 +1,6 @@
 package com.cts.ecommerce.service;
 
-import com.cts.ecommerce.model.Product;
+import com.cts.ecommerce.entity.Product;
 
 import java.util.List;
 

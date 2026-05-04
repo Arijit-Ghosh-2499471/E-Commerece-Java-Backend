@@ -1,6 +1,6 @@
 package com.cts.ecommerce.repository.impl;
 
-import com.cts.ecommerce.model.Category;
+import com.cts.ecommerce.entity.Category;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

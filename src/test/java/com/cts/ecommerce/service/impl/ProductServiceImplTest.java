@@ -1,7 +1,7 @@
 package com.cts.ecommerce.service.impl;
 
 import com.cts.ecommerce.exception.ResourceNotFoundException;
-import com.cts.ecommerce.model.Product;
+import com.cts.ecommerce.entity.Product;
 import com.cts.ecommerce.repository.CategoryRepository;
 import com.cts.ecommerce.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;

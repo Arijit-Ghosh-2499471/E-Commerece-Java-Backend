@@ -1,6 +1,6 @@
 package com.cts.ecommerce.repository.impl;
 
-import com.cts.ecommerce.model.Product;
+import com.cts.ecommerce.entity.Product;
 import com.cts.ecommerce.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;

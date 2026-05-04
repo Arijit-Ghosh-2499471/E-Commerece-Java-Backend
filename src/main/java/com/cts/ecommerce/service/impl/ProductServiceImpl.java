@@ -3,7 +3,7 @@ package com.cts.ecommerce.service.impl;
 import com.cts.ecommerce.repository.CategoryRepository;
 import com.cts.ecommerce.repository.ProductRepository;
 import com.cts.ecommerce.exception.ResourceNotFoundException;
-import com.cts.ecommerce.model.Product;
+import com.cts.ecommerce.entity.Product;
 import com.cts.ecommerce.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

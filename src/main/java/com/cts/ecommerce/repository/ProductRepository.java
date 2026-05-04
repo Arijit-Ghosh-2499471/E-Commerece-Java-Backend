@@ -1,7 +1,7 @@
 package com.cts.ecommerce.repository;
 
 
-import com.cts.ecommerce.model.Product;
+import com.cts.ecommerce.entity.Product;
 
 import java.util.List;
 import java.util.Optional;

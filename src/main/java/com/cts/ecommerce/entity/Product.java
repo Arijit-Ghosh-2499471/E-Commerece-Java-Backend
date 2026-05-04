@@ -1,4 +1,4 @@
-package com.cts.ecommerce.model;
+package com.cts.ecommerce.entity;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
