@@ -20,8 +20,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public int getIdOfAddress(int userId) {
-        return addressRepository.getIdOfAddress(userId);
+    public int getIdOfLatestAddress(int userId) {
+        return addressRepository.getIdOfLatestAddress(userId);
     }
 
     @Override

@@ -10,5 +10,5 @@ public interface AddressRepository {
     Address findById(int addressId);
     List<Address> findByUserId(int userId);
     List<Address> findAll();
-    int getIdOfAddress(int userId);
+    int getIdOfLatestAddress(int userId);
 }
