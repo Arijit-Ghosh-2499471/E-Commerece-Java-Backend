@@ -8,13 +8,13 @@ import java.util.Map;
 public interface OrderRepository {
 
     int addOrder(Order order);
-
     Order findById(int orderId);
     List<Order> findOrdersByUserId(int userId);
     List<Order> findAll();
-    int updateOrderStatus(int orderId,String status);
-    int processPayment(int orderId,String paymentStatus);
+    int updateOrderStatus(int orderId, String status);
+    int processPayment(int orderId, String paymentStatus);
     List<Map<String, Object>> getCartProducts(int userId);
-    double caluculateTotalPrice(int userId);
+    double calculateTotalPrice(int userId);
     int getShoppingCartId(int userId);
+
 }

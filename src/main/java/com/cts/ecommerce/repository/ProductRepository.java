@@ -1,27 +1,26 @@
 package com.cts.ecommerce.repository;
 
-
 import com.cts.ecommerce.entity.Product;
 
 import java.util.List;
-import java.util.Optional;
 
-/**
- * DAO contract for the Products table.
- */
 public interface ProductRepository {
 
     int save(Product product);
 
     int update(Product product);
 
-    int deleteById(Integer productId);
+    int deleteById(int productId);
 
-    Optional<Product> findById(Integer productId);
+    Product findById(int productId);
 
     List<Product> findAll();
 
-    List<Product> findByCategoryId(Integer categoryId);
+    List<Product> findByCategoryId(int categoryId);
 
-    boolean existsById(Integer productId);
+    boolean existsById(int productId);
+
+    List<Product> findByProductNameContaining(String productName);
+
+    List<Product> findByPriceBetween(double minPrice, double maxPrice);
 }

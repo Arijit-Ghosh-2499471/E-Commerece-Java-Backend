@@ -3,6 +3,7 @@ package com.cts.ecommerce.repository.impl;
 import com.cts.ecommerce.entity.ShoppingCart;
 import com.cts.ecommerce.repository.ShoppingCartRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -19,19 +20,14 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
     @Override
     public ShoppingCart findActiveCartByUserId(int userId) {
         String sql = "SELECT * FROM ShoppingCart WHERE UserId = ? AND IsActive = 1";
-
         try {
-            return jdbcTemplate.queryForObject(sql, (rs, rn) -> {
-                ShoppingCart cart = new ShoppingCart();
-                cart.setShoppingCartId(rs.getInt("ShoppingCartId"));
-                cart.setUserId(rs.getInt("UserId"));
-                cart.setActive(rs.getBoolean("IsActive"));
-                return cart;
-            }, userId);
+            return jdbcTemplate.queryForObject(
+                    sql,
+                    new BeanPropertyRowMapper<>(ShoppingCart.class),
+                    userId);
         } catch (Exception e) {
             return null;
         }
-
     }
 
     @Override

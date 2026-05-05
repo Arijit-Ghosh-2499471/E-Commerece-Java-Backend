@@ -2,6 +2,7 @@ package com.cts.ecommerce.repository.impl;
 
 import com.cts.ecommerce.entity.CartItem;
 import com.cts.ecommerce.repository.CartItemRepository;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,59 +19,40 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
     @Override
     public void addItem(int shoppingCartId, int productId, int quantity) {
-
         String sql = "INSERT INTO CartItems (ShoppingCartId, ProductId, Quantity) VALUES (?, ?, ?)";
-
         jdbcTemplate.update(sql, shoppingCartId, productId, quantity);
     }
 
     @Override
     public void updateQuantity(int shoppingCartId, int productId, int quantity) {
-
         String sql = "UPDATE CartItems SET Quantity = ? WHERE ShoppingCartId = ? AND ProductId = ?";
-
         jdbcTemplate.update(sql, quantity, shoppingCartId, productId);
     }
 
     @Override
     public CartItem getItem(int shoppingCartId, int productId) {
-
         String sql = "SELECT * FROM CartItems WHERE ShoppingCartId = ? AND ProductId = ?";
+        List<CartItem> items = jdbcTemplate.query(
+                sql,
+                new BeanPropertyRowMapper<>(CartItem.class),
+                shoppingCartId,
+                productId
+        );
 
-        try {
-            return jdbcTemplate.queryForObject(sql, (rs, rowNum) -> {
-                CartItem item = new CartItem();
-                item.setCartItemId(rs.getInt("CartItemId"));
-                item.setShoppingCartId(rs.getInt("ShoppingCartId"));
-                item.setProductId(rs.getInt("ProductId"));
-                item.setQuantity(rs.getInt("Quantity"));
-                return item;
-            }, shoppingCartId, productId);
-        } catch (Exception e) {
-            return null;
-        }
+        return items.isEmpty() ? null : items.getFirst();
     }
 
     @Override
     public List<CartItem> getItemsByCartId(int shoppingCartId) {
-
-        String sql = "SELECT * FROM cartitems WHERE ShoppingCartId = ?";
-
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            CartItem item = new CartItem();
-            item.setCartItemId(rs.getInt("CartItemId"));
-            item.setShoppingCartId(rs.getInt("ShoppingCartId"));
-            item.setProductId(rs.getInt("ProductId"));
-            item.setQuantity(rs.getInt("Quantity"));
-            return item;
-        }, shoppingCartId);
+        String sql = "SELECT * FROM CartItems WHERE ShoppingCartId = ?";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(CartItem.class), shoppingCartId);
     }
 
     @Override
     public void removeItem(int shoppingCartId, int productId) {
-
         String sql = "DELETE FROM CartItems WHERE ShoppingCartId = ? AND ProductId = ?";
-
         jdbcTemplate.update(sql, shoppingCartId, productId);
     }
+
+
 }

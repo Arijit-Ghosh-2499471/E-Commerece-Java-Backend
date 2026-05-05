@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface OrderService {
-    int addOrder(Order order);
+    void addOrder(Order order);
     Order findById(int orderId);
     List<Order> findOrdersByUserId(int userId);
     List<Order> findAll();

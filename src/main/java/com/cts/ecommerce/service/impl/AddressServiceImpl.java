@@ -15,13 +15,13 @@ public class AddressServiceImpl implements AddressService {
     private AddressRepository addressRepository;
 
     @Override
-    public int addAddress(Address address) {
-        return addressRepository.save(address);
+    public void addAddress(Address address) {
+        addressRepository.save(address);
     }
 
     @Override
-    public int getIdOfLatestAddress(int userId) {
-        return addressRepository.getIdOfLatestAddress(userId);
+    public int getIdOfAddress(int userId) {
+        return addressRepository.getIdOfRecentAddress(userId);
     }
 
     @Override
@@ -30,8 +30,8 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public int deleteAddress(int addressId) {
-        return addressRepository.delete(addressId);
+    public void deleteAddress(int addressId) {
+        addressRepository.delete(addressId);
     }
 
     @Override

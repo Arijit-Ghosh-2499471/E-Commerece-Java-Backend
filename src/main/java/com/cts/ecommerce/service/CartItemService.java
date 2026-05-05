@@ -11,4 +11,6 @@ public interface CartItemService {
     void removeItem(int userId, int productId, int quantity);
 
     List<CartItem> viewActiveCart(int userId);
+
+    List<CartItem> getItemsByShoppingCartId(int shoppingCartId);
 }

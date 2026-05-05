@@ -4,25 +4,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.cts.ecommerce.repository.UsersRepository;
+import com.cts.ecommerce.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import com.cts.ecommerce.entity.Users;
+import com.cts.ecommerce.entity.User;
 
 @Repository
-public class UsersRepositoryImpl implements UsersRepository {
+public class UserRepositoryImpl implements UserRepository {
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
     // ✅ RowMapper INSIDE repository
-    private RowMapper<Users> userRowMapper = new RowMapper<Users>() {
+    private RowMapper<User> userRowMapper = new RowMapper<User>() {
+
         @Override
-        public Users mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Users user = new Users();
+        public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+            User user = new User();
             user.setUserId(rs.getInt("UserId"));
             user.setName(rs.getString("Name"));
             user.setEmail(rs.getString("Email"));
@@ -34,7 +35,7 @@ public class UsersRepositoryImpl implements UsersRepository {
     };
 
     @Override
-    public int save(Users user) {
+    public int save(User user) {
         String sql = "INSERT INTO Users(Name, Email, Password, PaymentDetails, Role) VALUES (?, ?, ?, ?, ?)";
         return jdbcTemplate.update(sql,
                 user.getName(),
@@ -45,13 +46,13 @@ public class UsersRepositoryImpl implements UsersRepository {
     }
 
     @Override
-    public List<Users> findAll() {
+    public List<User> findAll() {
         String sql = "SELECT * FROM Users";
         return jdbcTemplate.query(sql, userRowMapper);
     }
 
     @Override
-    public Users findById(int id) {
+    public User findById(int id) {
         String sql = "SELECT * FROM Users WHERE UserId=?";
         return jdbcTemplate.queryForObject(sql, userRowMapper, id);
     }
@@ -61,4 +62,32 @@ public class UsersRepositoryImpl implements UsersRepository {
         String sql = "DELETE FROM Users WHERE UserId=?";
         return jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public String getPassword(String email) {
+        String sql = "SELECT password FROM Users WHERE email=?";
+        return jdbcTemplate.queryForObject(sql, String.class, email);
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        String sql = "SELECT * FROM Users WHERE Email=?";
+        return jdbcTemplate.queryForObject(sql, userRowMapper, email);
+    }
+
+    @Override
+    public int update(int id, User existingUser) {
+
+        String sql = "UPDATE Users SET Name = ?, Password = ?, PaymentDetails = ?, Role = ? WHERE UserId = ?";
+
+        return jdbcTemplate.update(
+                sql,
+                existingUser.getName(),
+                existingUser.getPassword(),
+                existingUser.getPaymentDetails(),
+                existingUser.getRole(),
+                id
+        );
+    }
+
 }

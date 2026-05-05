@@ -1,11 +1,13 @@
 package com.cts.ecommerce.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Component
 public class CartItem {
 
@@ -14,4 +16,9 @@ public class CartItem {
     private int productId;
     private int quantity;
 
+    public CartItem(int shoppingCartId, int productId, int quantity) {
+        this.shoppingCartId = shoppingCartId;
+        this.productId = productId;
+        this.quantity = quantity;
+    }
 }
