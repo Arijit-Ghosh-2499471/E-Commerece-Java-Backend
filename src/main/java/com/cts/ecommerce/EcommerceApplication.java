@@ -340,6 +340,7 @@ public class EcommerceApplication implements CommandLineRunner {
 		double totalPrice = 0.0;
 		int shoppingCartId = 0;
 
+
 		for (CartItem cartItem : cartItems) {
 			Product product = productService.getProductById(cartItem.getProductId());
 			double subTotal = product.getPrice() * cartItem.getQuantity();
@@ -366,7 +367,7 @@ public class EcommerceApplication implements CommandLineRunner {
 				log.info("Enter Quantity: ");
 				int quantity = Integer.parseInt(scanner.nextLine());
 
-				cartItemService.addItem(shoppingCartId, productId, quantity);
+				cartItemService.addItem(userId, productId, quantity);
 				log.info("Item added to cart.");
 			}
 
@@ -377,7 +378,7 @@ public class EcommerceApplication implements CommandLineRunner {
 				log.info("Enter Quantity: ");
 				int quantity = Integer.parseInt(scanner.nextLine());
 
-				cartItemService.removeItem(shoppingCartId, productId, quantity);
+				cartItemService.removeItem(userId, productId, quantity);
 				log.info("Item removed from cart.");
 			}
 
