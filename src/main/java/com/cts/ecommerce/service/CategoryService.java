@@ -4,18 +4,15 @@ import com.cts.ecommerce.entity.Category;
 
 import java.util.List;
 
-/**
- * Service contract for Category business logic.
- */
 public interface CategoryService {
 
     Category createCategory(Category category);
 
-    Category updateCategory(Integer categoryId, Category category);
+    Category updateCategory(int categoryId, Category category);
 
-    void deleteCategory(Integer categoryId);
+    void deleteCategory(int categoryId);
 
-    Category getCategoryById(Integer categoryId);
+    Category getCategoryById(int categoryId);
 
     List<Category> getAllCategories();
 }

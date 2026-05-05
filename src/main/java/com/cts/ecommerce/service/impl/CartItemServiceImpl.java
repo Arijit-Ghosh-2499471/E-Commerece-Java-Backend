@@ -27,7 +27,7 @@ public class CartItemServiceImpl implements CartItemService {
         ShoppingCart cart = shoppingCartRepository.findActiveCartByUserId(userId);
 
         if (cart == null) {
-            throw new IllegalStateException("Active cart does not exist for user " + userId);
+            throw new IllegalStateException("Active Cart Does Not Exist For User " + userId);
         }
 
         int cartId = cart.getShoppingCartId();
@@ -73,5 +73,10 @@ public class CartItemServiceImpl implements CartItemService {
         }
 
         return cartItemRepository.getItemsByCartId(cart.getShoppingCartId());
+    }
+
+    @Override
+    public List<CartItem> getItemsByShoppingCartId(int shoppingCartId) {
+        return cartItemRepository.getItemsByCartId(shoppingCartId);
     }
 }

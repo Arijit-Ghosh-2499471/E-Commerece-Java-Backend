@@ -16,15 +16,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public void checkout(int userId) {
-
         ShoppingCart cart = shoppingCartRepository.findActiveCartByUserId(userId);
-
         if (cart == null) {
             return;
         }
-
         shoppingCartRepository.deactivateCart(cart.getShoppingCartId());
-
         shoppingCartRepository.createCart(userId);
     }
 }

@@ -12,4 +12,8 @@ public interface ReviewRepository {
     Review findById(int id);
 
     int delete(int id);
+
+    List<Review> findByProductId(int productId);
+
+    List<Review> findByUserId(int userId);
 }

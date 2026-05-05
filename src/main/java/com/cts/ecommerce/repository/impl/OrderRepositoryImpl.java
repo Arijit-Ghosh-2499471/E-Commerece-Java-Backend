@@ -23,10 +23,9 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public int addOrder(Order order) {
-        String sql1 = "INSERT INTO orders(userId,totalPrice,shippingAddressId,orderStatus,paymentStatus,shoppingCartId) VALUES(?,?,?,?,?,?)";
-        String sql2 = "UPDATE ShoppingCart SET IsActive = FALSE WHERE ShoppingCartId = ?";
-        jdbcTemplate.update(sql2, order.getShoppingCartId());
-        return jdbcTemplate.update(sql1,
+        String sql = "INSERT INTO Orders (userId, totalPrice, shippingAddress, orderStatus, paymentStatus, shoppingCartId) VALUES (?, ?, ?, ?, ?, ?)";
+        return jdbcTemplate.update(
+                sql,
                 order.getUserId(),
                 order.getTotalPrice(),
                 order.getShippingAddressId(),
@@ -38,31 +37,31 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public Order findById(int orderId) {
-        String sql = "SELECT * FROM orders WHERE orderId = ?";
+        String sql = "SELECT * FROM Orders WHERE orderId = ?";
         return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Order.class), orderId);
     }
 
     @Override
     public List<Order> findOrdersByUserId(int userId) {
-        String sql = "SELECT * FROM orders WHERE userId = ?";
+        String sql = "SELECT * FROM Orders WHERE userId = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class), userId);
     }
 
     @Override
     public List<Order> findAll() {
-        String sql = "SELECT * FROM orders";
+        String sql = "SELECT * FROM Orders";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class));
     }
 
     @Override
     public int updateOrderStatus(int orderId, String status) {
-        String sql = "UPDATE orders SET orderStatus = ? WHERE orderId = ?";
+        String sql = "UPDATE Orders SET orderStatus = ? WHERE orderId = ?";
         return jdbcTemplate.update(sql, status, orderId);
     }
 
     @Override
     public int processPayment(int orderId, String paymentStatus) {
-        String sql = "UPDATE orders SET paymentStatus = ? WHERE orderId = ?";
+        String sql = "UPDATE Orders SET paymentStatus = ? WHERE orderId = ?";
         return jdbcTemplate.update(sql, paymentStatus, orderId);
     }
 
@@ -80,7 +79,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     }
 
     @Override
-    public double caluculateTotalPrice(int userId) {
+    public double calculateTotalPrice(int userId) {
         String sql = """
             SELECT SUM(p.Price * c.Quantity) AS TotalPrice
             FROM Products p

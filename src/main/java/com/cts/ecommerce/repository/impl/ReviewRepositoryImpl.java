@@ -59,4 +59,16 @@ public class ReviewRepositoryImpl implements ReviewRepository {
         String sql = "DELETE FROM Review WHERE ReviewId=?";
         return jdbcTemplate.update(sql, id);
     }
+
+    @Override
+    public List<Review> findByProductId(int productId) {
+        String sql = "SELECT * FROM Review WHERE ProductId=?";
+        return jdbcTemplate.query(sql, reviewRowMapper, productId);
+    }
+
+    @Override
+    public List<Review> findByUserId(int userId) {
+        String sql = "SELECT * FROM Review WHERE UserId=?";
+        return jdbcTemplate.query(sql, reviewRowMapper, userId);
+    }
 }

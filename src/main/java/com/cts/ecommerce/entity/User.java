@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 @Setter
 @NoArgsConstructor
 @Component
-public class Users {
+public class User {
 
     private int userId;
     private String name;
@@ -19,7 +19,7 @@ public class Users {
     private String paymentDetails;
     private String role;
 
-    public Users(String name, String email, String password, String paymentDetails, String role) {
+    public User(String name, String email, String password, String paymentDetails, String role) {
         this.name = name;
         this.email = email;
         this.password = password;

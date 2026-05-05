@@ -54,7 +54,7 @@ public class AddressRepositoryImpl implements AddressRepository {
     }
 
     @Override
-    public int getIdOfAddress(int userId) {
+    public int getIdOfRecentAddress(int userId) {
         String sql = "SELECT addressId FROM Address WHERE userId = ? ORDER BY addressId DESC LIMIT 1";
         Integer id = jdbcTemplate.queryForObject(sql, new Object[]{userId}, Integer.class);
         return id == null ? -1 : id;

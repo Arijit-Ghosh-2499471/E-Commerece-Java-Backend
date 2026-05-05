@@ -19,8 +19,8 @@ public class OrderServiceImpl implements OrderService {
 
 
     @Override
-    public int addOrder(Order order) {
-        return orderRepository.addOrder(order);
+    public void addOrder(Order order) {
+        orderRepository.addOrder(order);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public double calculateTotalPrice(int userId) {
-        return orderRepository.caluculateTotalPrice(userId);
+        return orderRepository.calculateTotalPrice(userId);
     }
 
     @Override

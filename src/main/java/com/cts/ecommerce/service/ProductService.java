@@ -4,20 +4,23 @@ import com.cts.ecommerce.entity.Product;
 
 import java.util.List;
 
-/**
- * Service contract for Product business logic.
- */
 public interface ProductService {
 
     Product createProduct(Product product);
 
-    Product updateProduct(Integer productId, Product product);
+    Product updateProduct(int productId, Product product);
 
-    void deleteProduct(Integer productId);
+    void deleteProduct(int productId);
 
-    Product getProductById(Integer productId);
+    Product getProductById(int productId);
 
     List<Product> getAllProducts();
 
-    List<Product> getProductsByCategory(Integer categoryId);
+    List<Product> getProductsByCategory(int categoryId);
+
+    List<Product> getProductsByName(String productName);
+
+    List<Product> getProductsByPriceRange(Double minPrice, Double maxPrice);
+
+    void validateProductId(int productId);
 }
