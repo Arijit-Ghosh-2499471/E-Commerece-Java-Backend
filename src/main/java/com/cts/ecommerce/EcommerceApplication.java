@@ -1,6 +1,7 @@
 package com.cts.ecommerce;
 
 import com.cts.ecommerce.entity.*;
+import com.cts.ecommerce.exception.AddressNotFoundException;
 import com.cts.ecommerce.service.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -387,52 +388,55 @@ public class EcommerceApplication implements CommandLineRunner {
 					log.info("User payment details is empty.");
 					return;
 				}
+				try {
 
-				List<Address> addresses = addressService.getAddressesByUserId(userId);
+					List<Address> addresses = addressService.getAddressesByUserId(userId);
 
-				if (addresses.isEmpty()) {
-					log.info("No address found. Please add an address before checkout.");
-					return;
+//					if (addresses.isEmpty()) {
+//						log.info("No address found. Please add an address before checkout.");
+//						return;
+//					}
+
+					log.info("Select Shipping Address:");
+					for (Address address : addresses) {
+						log.info(
+								"AddressId: {} | {}, {}, {}, {} - {}",
+								address.getAddressId(),
+								address.getHouseNo(),
+								address.getArea(),
+								address.getCity(),
+								address.getState(),
+								address.getPinCode()
+						);
+
+					}
+					int selectedAddressId = Integer.parseInt(scanner.nextLine());
+
+					Address selectedAddress = addresses.stream()
+							.filter(a -> a.getAddressId() == selectedAddressId)
+							.findFirst()
+							.orElse(null);
+
+					if (selectedAddress == null) {
+						log.info("Invalid Address Selection.");
+						return;
+					}
+					Order order = new Order();
+					order.setUserId(userId);
+					order.setShoppingCartId(shoppingCartId);
+					order.setTotalPrice(totalPrice);
+					order.setOrderStatus("Pending");
+					order.setPaymentStatus("Paid");
+					order.setShippingAddressId(selectedAddress.getAddressId());
+
+					orderService.addOrder(order);
+					shoppingCartService.checkout(userId);
+
+					log.info("Order placed successfully.");
+
+				}catch (AddressNotFoundException e) {
+					throw new AddressNotFoundException("Address not Found");
 				}
-
-				log.info("Select Shipping Address:");
-				for (Address address : addresses) {
-					log.info(
-							"AddressId: {} | {}, {}, {}, {} - {}",
-							address.getAddressId(),
-							address.getHouseNo(),
-							address.getArea(),
-							address.getCity(),
-							address.getState(),
-							address.getPinCode()
-					);
-
-				}
-
-				int selectedAddressId = Integer.parseInt(scanner.nextLine());
-
-				Address selectedAddress = addresses.stream()
-						.filter(a -> a.getAddressId() == selectedAddressId)
-						.findFirst()
-						.orElse(null);
-
-				if (selectedAddress == null) {
-					log.info("Invalid Address Selection.");
-					return;
-				}
-
-				Order order = new Order();
-				order.setUserId(userId);
-				order.setShoppingCartId(shoppingCartId);
-				order.setTotalPrice(totalPrice);
-				order.setOrderStatus("Pending");
-				order.setPaymentStatus("Paid");
-				order.setShippingAddressId(selectedAddress.getAddressId());
-
-				orderService.addOrder(order);
-				shoppingCartService.checkout(userId);
-
-				log.info("Order placed successfully.");
 			}
 
             case 0 -> {

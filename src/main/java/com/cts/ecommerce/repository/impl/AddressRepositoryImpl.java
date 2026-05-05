@@ -15,49 +15,62 @@ public class AddressRepositoryImpl implements AddressRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    // SQL statements as constants
+    private static final String SQL_INSERT = "INSERT INTO Address(UserId, HouseNo, Area, City, State, Country, Pincode) VALUES(?,?,?,?,?,?,?)";
+
+    private static final String SQL_UPDATE = "UPDATE Address SET HouseNo=?, Area=?, City=?, State=?, Country=?, Pincode=? WHERE AddressId=?";
+
+    private static final String SQL_DELETE = "DELETE FROM Address WHERE AddressId=?";
+
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM Address WHERE AddressId=?";
+
+    private static final String SQL_FIND_BY_USER = "SELECT * FROM Address WHERE UserId=?";
+
+    private static final String SQL_FIND_ALL = "SELECT * FROM Address";
+
+    private static final String SQL_FIND_RECENT_ID = "SELECT addressId FROM Address WHERE userId = ? ORDER BY addressId DESC LIMIT 1";
+
     @Override
     public int save(Address address) {
-        String sql = "INSERT INTO Address(UserId, HouseNo, Area, City, State, Country, Pincode) VALUES(?,?,?,?,?,?,?)";
-        return jdbcTemplate.update(sql, address.getUserId(), address.getHouseNo(), address.getArea(),
+        return jdbcTemplate.update(SQL_INSERT,
+                address.getUserId(), address.getHouseNo(), address.getArea(),
                 address.getCity(), address.getState(), address.getCountry(), address.getPinCode());
     }
 
     @Override
     public int update(Address address) {
-        String sql = "UPDATE Address SET HouseNo=?, Area=?, City=?, State=?, Country=?, Pincode=? WHERE AddressId=?";
-        return jdbcTemplate.update(sql, address.getHouseNo(), address.getArea(), address.getCity(),
+        return jdbcTemplate.update(SQL_UPDATE,
+                address.getHouseNo(), address.getArea(), address.getCity(),
                 address.getState(), address.getCountry(), address.getPinCode(), address.getAddressId());
     }
 
     @Override
     public int delete(int addressId) {
-        String sql = "DELETE FROM Address WHERE AddressId=?";
-        return jdbcTemplate.update(sql, addressId);
+        return jdbcTemplate.update(SQL_DELETE, addressId);
     }
 
     @Override
     public Address findById(int addressId) {
-        String sql = "SELECT * FROM Address WHERE AddressId=?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Address.class), addressId);
+        return jdbcTemplate.queryForObject(SQL_FIND_BY_ID,
+                new BeanPropertyRowMapper<>(Address.class), addressId);
     }
 
     @Override
     public List<Address> findByUserId(int userId) {
-        String sql = "SELECT * FROM Address WHERE UserId=?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Address.class), userId);
+        return jdbcTemplate.query(SQL_FIND_BY_USER,
+                new BeanPropertyRowMapper<>(Address.class), userId);
     }
 
     @Override
     public List<Address> findAll() {
-        String sql = "SELECT * FROM Address";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Address.class));
+        return jdbcTemplate.query(SQL_FIND_ALL,
+                new BeanPropertyRowMapper<>(Address.class));
     }
 
     @Override
     public int getIdOfRecentAddress(int userId) {
-        String sql = "SELECT addressId FROM Address WHERE userId = ? ORDER BY addressId DESC LIMIT 1";
-        Integer id = jdbcTemplate.queryForObject(sql, new Object[]{userId}, Integer.class);
+        Integer id = jdbcTemplate.queryForObject(SQL_FIND_RECENT_ID,
+                new Object[]{userId}, Integer.class);
         return id == null ? -1 : id;
     }
-
 }
