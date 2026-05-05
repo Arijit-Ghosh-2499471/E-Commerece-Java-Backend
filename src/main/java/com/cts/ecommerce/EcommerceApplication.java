@@ -477,13 +477,13 @@ public class EcommerceApplication implements CommandLineRunner {
 		log.info("============ GIVE REVIEW ===========");
 		int userId = loggedInUser.getUserId();
 		log.info("Enter Product Id to give review:");
-		int productId = scanner.nextInt();
+		int productId = Integer.parseInt(scanner.nextLine());
 
 		log.info("Enter Rating (1-5) :");
-		int rating = scanner.nextInt();
+		int rating = Integer.parseInt(scanner.nextLine());
 
 		log.info("Enter Description:");
-		String description = scanner.next();
+		String description = scanner.nextLine();
 
 		Review review = new Review();
 		review.setUserId(userId);
