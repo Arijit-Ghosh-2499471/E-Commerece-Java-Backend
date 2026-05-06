@@ -5,6 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Entity representing the Review table in the ecommerce schema.
+ * Maps to:
+ *   Review(ReviewId INT PK, UserId INT FK, ProductId INT FK,
+ *      Rating INT, ReviewDescription VARCHAR)
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

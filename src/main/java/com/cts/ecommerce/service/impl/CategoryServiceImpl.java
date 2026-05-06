@@ -1,9 +1,9 @@
-package com.cts.ecommerce.serviceTest.impl;
+package com.cts.ecommerce.service.impl;
 
 import com.cts.ecommerce.entity.Category;
 import com.cts.ecommerce.exception.ResourceNotFoundException;
 import com.cts.ecommerce.repository.CategoryRepository;
-import com.cts.ecommerce.serviceTest.CategoryService;
+import com.cts.ecommerce.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

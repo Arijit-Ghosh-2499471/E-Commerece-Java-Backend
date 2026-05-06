@@ -5,6 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Entity representing the Address table in the ecommerce schema.
+ * Maps to:
+ *   Address(AddressId INT PK, UserId INT FK, HouseNo VARCHAR,
+ *      Area VARCHAR, City VARCHAR, State VARCHAR, Country VARCHAR, Pincode INT)
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

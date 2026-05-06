@@ -1,12 +1,9 @@
-package com.cts.ecommerce.serviceTest.impl;
+package com.cts.ecommerce.service.impl;
 
 import com.cts.ecommerce.entity.Order;
-import com.cts.ecommerce.exception.OrderNotFoundException;
-import com.cts.ecommerce.exception.OrderCreationException;
-import com.cts.ecommerce.exception.OrderUpdateException;
-import com.cts.ecommerce.exception.PaymentProcessingException;
+import com.cts.ecommerce.exception.*;
 import com.cts.ecommerce.repository.OrderRepository;
-import com.cts.ecommerce.serviceTest.OrderService;
+import com.cts.ecommerce.service.OrderService;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.slf4j.Logger;

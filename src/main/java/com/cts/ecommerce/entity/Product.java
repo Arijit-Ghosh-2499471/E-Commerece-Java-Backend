@@ -3,6 +3,13 @@ package com.cts.ecommerce.entity;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
+/**
+ * Entity representing the Products table in the ecommerce schema.
+ * Maps to:
+ *   Products(ProductId INT PK, ProductName VARCHAR, Description VARCHAR,
+ *      Price DOUBLE, CategoryId INT FK, ImageUrl VARCHAR)
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

@@ -5,6 +5,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Entity representing the Orders table in the ecommerce schema.
+ * Maps to:
+ *   Orders(OrderId INT PK, UserId INT FK, TotalPrice DOUBLE,
+ *      ShippingAddress INT FK, OrderStatus VARCHAR, PaymentStatus VARCHAR,
+ *      ShoppingCartId INT FK)
+ */
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -26,18 +34,4 @@ public class Order {
         this.paymentStatus = paymentStatus;
         this.shoppingCartId = shoppingCartId;
     }
-
-//
-//    @Override
-//    public String toString() {
-//        return "Order{" +
-//                "orderId=" + orderId +
-//                ", userId=" + userId +
-//                ", totalPrice=" + totalPrice +
-//                ", shippingAddressId=" + shippingAddressId +
-//                ", orderStatus='" + orderStatus + '\'' +
-//                ", paymentStatus='" + paymentStatus + '\'' +
-//                ", shoppingCartId=" + shoppingCartId +
-//                '}';
-//    }
 }

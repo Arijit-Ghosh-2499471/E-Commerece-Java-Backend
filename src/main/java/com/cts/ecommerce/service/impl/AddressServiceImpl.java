@@ -1,4 +1,4 @@
-package com.cts.ecommerce.serviceTest.impl;
+package com.cts.ecommerce.service.impl;
 
 import com.cts.ecommerce.entity.Address;
 import com.cts.ecommerce.exception.AddressNotFoundException;
@@ -6,7 +6,7 @@ import com.cts.ecommerce.exception.AddressCreationException;
 import com.cts.ecommerce.exception.AddressUpdateException;
 import com.cts.ecommerce.exception.AddressDeletionException;
 import com.cts.ecommerce.repository.AddressRepository;
-import com.cts.ecommerce.serviceTest.AddressService;
+import com.cts.ecommerce.service.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
@@ -134,7 +134,6 @@ public class AddressServiceImpl implements AddressService {
         logger.debug("Fetching addresses for userId={}", userId);
         List<Address> addresses = addressRepository.findByUserId(userId);
         if (addresses == null || addresses.isEmpty()) {
-            logger.warn("No addresses found for userId={}", userId);
             throw new AddressNotFoundException("No addresses found for userId: " + userId);
         }
         logger.info("Found {} addresses for userId={}", addresses.size(), userId);

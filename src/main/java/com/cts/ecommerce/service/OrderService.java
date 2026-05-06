@@ -1,4 +1,4 @@
-package com.cts.ecommerce.serviceTest;
+package com.cts.ecommerce.service;
 
 import com.cts.ecommerce.entity.Order;
 

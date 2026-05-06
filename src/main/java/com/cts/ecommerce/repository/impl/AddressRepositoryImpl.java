@@ -1,6 +1,7 @@
 package com.cts.ecommerce.repository.impl;
 
 import com.cts.ecommerce.entity.Address;
+import com.cts.ecommerce.exception.*;
 import com.cts.ecommerce.repository.AddressRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -57,9 +58,13 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public int save(Address address) {
-        return jdbcTemplate.update(SQL_INSERT,
-                address.getUserId(), address.getHouseNo(), address.getArea(),
-                address.getCity(), address.getState(), address.getCountry(), address.getPinCode());
+        try {
+            return jdbcTemplate.update(SQL_INSERT,
+                    address.getUserId(), address.getHouseNo(), address.getArea(),
+                    address.getCity(), address.getState(), address.getCountry(), address.getPinCode());
+        } catch (Exception ex) {
+            throw new AddressCreationException("Failed to create address");
+        }
     }
 
     /**
@@ -70,9 +75,13 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public int update(Address address) {
-        return jdbcTemplate.update(SQL_UPDATE,
-                address.getHouseNo(), address.getArea(), address.getCity(),
-                address.getState(), address.getCountry(), address.getPinCode(), address.getAddressId());
+        try {
+            return jdbcTemplate.update(SQL_UPDATE,
+                    address.getHouseNo(), address.getArea(), address.getCity(),
+                    address.getState(), address.getCountry(), address.getPinCode(), address.getAddressId());
+        } catch (Exception ex) {
+            throw new AddressUpdateException("Failed to update address with id " + address.getAddressId());
+        }
     }
 
     /**
@@ -83,7 +92,11 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public int delete(int addressId) {
-        return jdbcTemplate.update(SQL_DELETE, addressId);
+        try {
+            return jdbcTemplate.update(SQL_DELETE, addressId);
+        } catch (Exception ex) {
+            throw new AddressDeletionException("Failed to delete address with id " + addressId);
+        }
     }
 
     /**
@@ -94,8 +107,12 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public Address findById(int addressId) {
-        return jdbcTemplate.queryForObject(SQL_FIND_BY_ID,
-                new BeanPropertyRowMapper<>(Address.class), addressId);
+        try {
+            return jdbcTemplate.queryForObject(SQL_FIND_BY_ID,
+                    new BeanPropertyRowMapper<>(Address.class), addressId);
+        } catch (Exception ex) {
+            throw new AddressNotFoundException("Address not found with id " + addressId);
+        }
     }
 
     /**
@@ -106,8 +123,12 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public List<Address> findByUserId(int userId) {
-        return jdbcTemplate.query(SQL_FIND_BY_USER,
-                new BeanPropertyRowMapper<>(Address.class), userId);
+        try {
+            return jdbcTemplate.query(SQL_FIND_BY_USER,
+                    new BeanPropertyRowMapper<>(Address.class), userId);
+        } catch (Exception ex) {
+            throw new AddressNotFoundException("Addresses not found for userId " + userId);
+        }
     }
 
     /**
@@ -117,8 +138,12 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public List<Address> findAll() {
-        return jdbcTemplate.query(SQL_FIND_ALL,
-                new BeanPropertyRowMapper<>(Address.class));
+        try {
+            return jdbcTemplate.query(SQL_FIND_ALL,
+                    new BeanPropertyRowMapper<>(Address.class));
+        } catch (Exception ex) {
+            throw new AddressNotFoundException("Failed to fetch addresses");
+        }
     }
 
     /**
@@ -129,8 +154,12 @@ public class AddressRepositoryImpl implements AddressRepository {
      */
     @Override
     public int getIdOfRecentAddress(int userId) {
-        Integer id = jdbcTemplate.queryForObject(SQL_FIND_RECENT_ID,
-                new Object[]{userId}, Integer.class);
-        return id == null ? -1 : id;
+        try {
+            Integer id = jdbcTemplate.queryForObject(SQL_FIND_RECENT_ID,
+                    new Object[]{userId}, Integer.class);
+            return id == null ? -1 : id;
+        } catch (Exception ex) {
+            throw new AddressNotFoundException("Recent address not found for userId " + userId);
+        }
     }
 }

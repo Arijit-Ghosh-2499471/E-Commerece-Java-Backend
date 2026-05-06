@@ -6,6 +6,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Entity representing the Users table in the ecommerce schema.
+ * Maps to:
+ *   Users(UserId INT PK, Name VARCHAR, Email VARCHAR,
+ *      Password VARCHAR, PaymentDetails VARCHAR, Role VARCHAR)
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

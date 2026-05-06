@@ -5,6 +5,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
+/**
+ * Entity representing the CartItems table in the ecommerce schema.
+ * Maps to:
+ *   CartItems(CartItemId INT PK, ShoppingCartId INT FK,
+ *      ProductId INT FK, Quantity INT)
+ */
+
 @Getter
 @Setter
 @NoArgsConstructor

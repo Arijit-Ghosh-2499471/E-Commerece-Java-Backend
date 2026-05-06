@@ -1,11 +1,11 @@
-package com.cts.ecommerce.serviceTest.impl;
+package com.cts.ecommerce.service.impl;
 
 import java.util.List;
 
 import com.cts.ecommerce.exception.ReviewCreationException;
 import com.cts.ecommerce.exception.ReviewDeletionException;
 import com.cts.ecommerce.exception.ReviewNotFoundException;
-import com.cts.ecommerce.serviceTest.ReviewService;
+import com.cts.ecommerce.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;

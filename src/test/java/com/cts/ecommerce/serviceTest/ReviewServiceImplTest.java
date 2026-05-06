@@ -5,7 +5,7 @@ import com.cts.ecommerce.exception.ReviewCreationException;
 import com.cts.ecommerce.exception.ReviewDeletionException;
 import com.cts.ecommerce.exception.ReviewNotFoundException;
 import com.cts.ecommerce.repository.ReviewRepository;
-import com.cts.ecommerce.serviceTest.impl.ReviewServiceImpl;
+import com.cts.ecommerce.service.impl.ReviewServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,9 +20,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for ReviewServiceImpl.
- *
- * These tests use mocked repositories and do not modify or fetch data
- * from the actual database.
  */
 @ExtendWith(MockitoExtension.class)
 class ReviewServiceImplTest {
@@ -104,7 +101,7 @@ class ReviewServiceImplTest {
 
         assertNotNull(reviews);
         assertEquals(1, reviews.size());
-        assertEquals(5, reviews.get(0).getRating());
+        assertEquals(5, reviews.getFirst().getRating());
         verify(reviewRepository, times(1)).findAll();
     }
 
@@ -227,7 +224,7 @@ class ReviewServiceImplTest {
 
         assertNotNull(reviews);
         assertEquals(1, reviews.size());
-        assertEquals(101, reviews.get(0).getProductId());
+        assertEquals(101, reviews.getFirst().getProductId());
         verify(reviewRepository, times(1)).findByProductId(101);
     }
 
@@ -259,7 +256,7 @@ class ReviewServiceImplTest {
 
         assertNotNull(reviews);
         assertEquals(1, reviews.size());
-        assertEquals(1, reviews.get(0).getUserId());
+        assertEquals(1, reviews.getFirst().getUserId());
         verify(reviewRepository, times(1)).findByUserId(1);
     }
 

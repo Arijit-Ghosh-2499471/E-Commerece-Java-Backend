@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
  * Maps to:
  *   Category(CategoryId INT PK, CategoryName VARCHAR(20) NOT NULL)
  */
+
 @Getter
 @Setter
 @NoArgsConstructor

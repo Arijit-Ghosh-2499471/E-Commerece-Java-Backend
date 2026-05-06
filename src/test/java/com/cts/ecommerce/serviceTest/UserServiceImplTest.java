@@ -8,7 +8,7 @@ import com.cts.ecommerce.exception.UserNotFoundException;
 import com.cts.ecommerce.exception.UserUpdateException;
 import com.cts.ecommerce.repository.ShoppingCartRepository;
 import com.cts.ecommerce.repository.UserRepository;
-import com.cts.ecommerce.serviceTest.impl.UserServiceImpl;
+import com.cts.ecommerce.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,9 +23,6 @@ import static org.mockito.Mockito.*;
 
 /**
  * Unit tests for UserServiceImpl.
- *
- * These tests use mocked repositories and do not modify or fetch data
- * from the actual database.
  */
 @ExtendWith(MockitoExtension.class)
 class UserServiceImplTest {
@@ -95,7 +92,7 @@ class UserServiceImplTest {
 
         assertNotNull(users);
         assertEquals(1, users.size());
-        assertEquals("test@example.com", users.get(0).getEmail());
+        assertEquals("test@example.com", users.getFirst().getEmail());
         verify(userRepository, times(1)).findAll();
     }
 

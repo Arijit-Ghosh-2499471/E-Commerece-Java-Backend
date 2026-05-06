@@ -1,4 +1,4 @@
-package com.cts.ecommerce.serviceTest;
+package com.cts.ecommerce.service;
 
 import java.util.List;
 import com.cts.ecommerce.entity.Review;

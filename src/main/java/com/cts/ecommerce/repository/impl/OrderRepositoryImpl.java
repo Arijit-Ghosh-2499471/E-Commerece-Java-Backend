@@ -1,6 +1,7 @@
 package com.cts.ecommerce.repository.impl;
 
 import com.cts.ecommerce.entity.Order;
+import com.cts.ecommerce.exception.*;
 import com.cts.ecommerce.mappers.CartMapper;
 import com.cts.ecommerce.repository.OrderRepository;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -53,7 +54,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     /** SQL query to retrieve products in a user's cart */
     private static final String SQL_GET_CART_PRODUCTS = """
-            SELECT p.productId, p.productName, p.description, p.price, p.categoryId, p.imageURL, 
+            SELECT p.productId, p.productName, p.description, p.price, p.categoryId, p.imageURL,
                    s.userId, s.shoppingCartId
             FROM Products p
             JOIN CartItems c ON p.ProductId = c.ProductId
@@ -82,13 +83,17 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public int addOrder(Order order) {
-        return jdbcTemplate.update(SQL_INSERT_ORDER,
-                order.getUserId(),
-                order.getTotalPrice(),
-                order.getShippingAddressId(),
-                order.getOrderStatus(),
-                order.getPaymentStatus(),
-                order.getShoppingCartId());
+        try {
+            return jdbcTemplate.update(SQL_INSERT_ORDER,
+                    order.getUserId(),
+                    order.getTotalPrice(),
+                    order.getShippingAddressId(),
+                    order.getOrderStatus(),
+                    order.getPaymentStatus(),
+                    order.getShoppingCartId());
+        } catch (Exception ex) {
+            throw new OrderCreationException("Failed to create order");
+        }
     }
 
     /**
@@ -99,8 +104,12 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public Order findById(int orderId) {
-        return jdbcTemplate.queryForObject(SQL_FIND_BY_ID,
-                new BeanPropertyRowMapper<>(Order.class), orderId);
+        try {
+            return jdbcTemplate.queryForObject(SQL_FIND_BY_ID,
+                    new BeanPropertyRowMapper<>(Order.class), orderId);
+        } catch (Exception ex) {
+            throw new OrderNotFoundException("Order not found with id " + orderId);
+        }
     }
 
     /**
@@ -111,8 +120,12 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public List<Order> findOrdersByUserId(int userId) {
-        return jdbcTemplate.query(SQL_FIND_BY_USER,
-                new BeanPropertyRowMapper<>(Order.class), userId);
+        try {
+            return jdbcTemplate.query(SQL_FIND_BY_USER,
+                    new BeanPropertyRowMapper<>(Order.class), userId);
+        } catch (Exception ex) {
+            throw new OrderNotFoundException("Orders not found for userId " + userId);
+        }
     }
 
     /**
@@ -122,8 +135,12 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public List<Order> findAll() {
-        return jdbcTemplate.query(SQL_FIND_ALL,
-                new BeanPropertyRowMapper<>(Order.class));
+        try {
+            return jdbcTemplate.query(SQL_FIND_ALL,
+                    new BeanPropertyRowMapper<>(Order.class));
+        } catch (Exception ex) {
+            throw new OrderNotFoundException("Failed to fetch orders");
+        }
     }
 
     /**
@@ -135,7 +152,11 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public int updateOrderStatus(int orderId, String status) {
-        return jdbcTemplate.update(SQL_UPDATE_ORDER_STATUS, status, orderId);
+        try {
+            return jdbcTemplate.update(SQL_UPDATE_ORDER_STATUS, status, orderId);
+        } catch (Exception ex) {
+            throw new OrderUpdateException("Failed to update order status");
+        }
     }
 
     /**
@@ -147,7 +168,11 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public int processPayment(int orderId, String paymentStatus) {
-        return jdbcTemplate.update(SQL_UPDATE_PAYMENT_STATUS, paymentStatus, orderId);
+        try {
+            return jdbcTemplate.update(SQL_UPDATE_PAYMENT_STATUS, paymentStatus, orderId);
+        } catch (Exception ex) {
+            throw new PaymentProcessingException("Payment processing failed");
+        }
     }
 
     /**
@@ -158,7 +183,11 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public List<Map<String, Object>> getCartProducts(int userId) {
-        return jdbcTemplate.query(SQL_GET_CART_PRODUCTS, cartMapper.getCartMapper(), userId);
+        try {
+            return jdbcTemplate.query(SQL_GET_CART_PRODUCTS, cartMapper.getCartMapper(), userId);
+        } catch (Exception ex) {
+            throw new ShoppingCartNotFoundException("Cart products not found for userId " + userId);
+        }
     }
 
     /**
@@ -169,9 +198,13 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public double calculateTotalPrice(int userId) {
-        Double totalPrice = jdbcTemplate.queryForObject(SQL_CALCULATE_TOTAL_PRICE,
-                new Object[]{userId}, Double.class);
-        return totalPrice != null ? totalPrice : 0.0;
+        try {
+            Double totalPrice = jdbcTemplate.queryForObject(SQL_CALCULATE_TOTAL_PRICE,
+                    new Object[]{userId}, Double.class);
+            return totalPrice != null ? totalPrice : 0.0;
+        } catch (Exception ex) {
+            throw new ShoppingCartNotFoundException("Failed to calculate total price");
+        }
     }
 
     /**
@@ -182,8 +215,12 @@ public class OrderRepositoryImpl implements OrderRepository {
      */
     @Override
     public int getShoppingCartId(int userId) {
-        Integer id = jdbcTemplate.queryForObject(SQL_GET_CART_ID,
-                new Object[]{userId}, Integer.class);
-        return id == null ? -1 : id;
+        try {
+            Integer id = jdbcTemplate.queryForObject(SQL_GET_CART_ID,
+                    new Object[]{userId}, Integer.class);
+            return id == null ? -1 : id;
+        } catch (Exception ex) {
+            throw new ShoppingCartNotFoundException("Active shopping cart not found for userId " + userId);
+        }
     }
 }
