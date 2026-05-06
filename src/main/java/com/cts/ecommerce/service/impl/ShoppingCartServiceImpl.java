@@ -23,4 +23,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         shoppingCartRepository.deactivateCart(cart.getShoppingCartId());
         shoppingCartRepository.createCart(userId);
     }
+
+    @Override
+    public ShoppingCart findActiveCardByUserId(int userId) {
+        return shoppingCartRepository.findActiveCartByUserId(userId);
+    }
 }

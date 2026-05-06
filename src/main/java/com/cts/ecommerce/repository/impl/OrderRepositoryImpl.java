@@ -19,13 +19,43 @@ public class OrderRepositoryImpl implements OrderRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    CartMapper cartMapper = new CartMapper();
+    private final CartMapper cartMapper = new CartMapper();
+
+    // SQL constants
+    private static final String SQL_INSERT_ORDER = "INSERT INTO Orders (userId, totalPrice, shippingAddress, orderStatus, paymentStatus, shoppingCartId) VALUES (?, ?, ?, ?, ?, ?)";
+
+    private static final String SQL_FIND_BY_ID = "SELECT * FROM Orders WHERE orderId = ?";
+
+    private static final String SQL_FIND_BY_USER = "SELECT * FROM Orders WHERE userId = ?";
+
+    private static final String SQL_FIND_ALL = "SELECT * FROM Orders";
+
+    private static final String SQL_UPDATE_ORDER_STATUS = "UPDATE Orders SET orderStatus = ? WHERE orderId = ?";
+
+    private static final String SQL_UPDATE_PAYMENT_STATUS = "UPDATE Orders SET paymentStatus = ? WHERE orderId = ?";
+
+    private static final String SQL_GET_CART_PRODUCTS = """
+            SELECT p.productId, p.productName, p.description, p.price, p.categoryId, p.imageURL, 
+                   s.userId, s.shoppingCartId
+            FROM Products p
+            JOIN CartItems c ON p.ProductId = c.ProductId
+            JOIN ShoppingCart s ON c.ShoppingCartId = s.ShoppingCartId
+            WHERE s.UserId = ?
+            """;
+
+    private static final String SQL_CALCULATE_TOTAL_PRICE = """
+            SELECT SUM(p.Price * c.Quantity) AS TotalPrice
+            FROM Products p
+            JOIN CartItems c ON p.ProductId = c.ProductId
+            JOIN ShoppingCart s ON c.ShoppingCartId = s.ShoppingCartId
+            WHERE s.UserId = ?
+            """;
+
+    private static final String SQL_GET_CART_ID = "SELECT shoppingCartId FROM ShoppingCart WHERE userId = ? AND IsActive = TRUE";
 
     @Override
     public int addOrder(Order order) {
-        String sql = "INSERT INTO Orders (userId, totalPrice, shippingAddress, orderStatus, paymentStatus, shoppingCartId) VALUES (?, ?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(
-                sql,
+        return jdbcTemplate.update(SQL_INSERT_ORDER,
                 order.getUserId(),
                 order.getTotalPrice(),
                 order.getShippingAddressId(),
@@ -34,67 +64,50 @@ public class OrderRepositoryImpl implements OrderRepository {
                 order.getShoppingCartId());
     }
 
-
     @Override
     public Order findById(int orderId) {
-        String sql = "SELECT * FROM Orders WHERE orderId = ?";
-        return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Order.class), orderId);
+        return jdbcTemplate.queryForObject(SQL_FIND_BY_ID,
+                new BeanPropertyRowMapper<>(Order.class), orderId);
     }
 
     @Override
     public List<Order> findOrdersByUserId(int userId) {
-        String sql = "SELECT * FROM Orders WHERE userId = ?";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class), userId);
+        return jdbcTemplate.query(SQL_FIND_BY_USER,
+                new BeanPropertyRowMapper<>(Order.class), userId);
     }
 
     @Override
     public List<Order> findAll() {
-        String sql = "SELECT * FROM Orders";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Order.class));
+        return jdbcTemplate.query(SQL_FIND_ALL,
+                new BeanPropertyRowMapper<>(Order.class));
     }
 
     @Override
     public int updateOrderStatus(int orderId, String status) {
-        String sql = "UPDATE Orders SET orderStatus = ? WHERE orderId = ?";
-        return jdbcTemplate.update(sql, status, orderId);
+        return jdbcTemplate.update(SQL_UPDATE_ORDER_STATUS, status, orderId);
     }
 
     @Override
     public int processPayment(int orderId, String paymentStatus) {
-        String sql = "UPDATE Orders SET paymentStatus = ? WHERE orderId = ?";
-        return jdbcTemplate.update(sql, paymentStatus, orderId);
+        return jdbcTemplate.update(SQL_UPDATE_PAYMENT_STATUS, paymentStatus, orderId);
     }
 
     @Override
     public List<Map<String, Object>> getCartProducts(int userId) {
-        String sql = """
-                SELECT p.productId, p.productName, p.description, p.price, p.categoryId, p.imageURL, 
-                       s.userId, s.shoppingCartId
-                FROM Products p
-                JOIN CartItems c ON p.ProductId = c.ProductId
-                JOIN ShoppingCart s ON c.ShoppingCartId = s.ShoppingCartId
-                WHERE s.UserId = ?;
-                """;
-        return jdbcTemplate.query(sql, cartMapper.getCartMapper(), userId);
+        return jdbcTemplate.query(SQL_GET_CART_PRODUCTS, cartMapper.getCartMapper(), userId);
     }
 
     @Override
     public double calculateTotalPrice(int userId) {
-        String sql = """
-            SELECT SUM(p.Price * c.Quantity) AS TotalPrice
-            FROM Products p
-            JOIN CartItems c ON p.ProductId = c.ProductId
-            JOIN ShoppingCart s ON c.ShoppingCartId = s.ShoppingCartId
-            WHERE s.UserId = ?
-            """;
-        Double totalPrice = jdbcTemplate.queryForObject(sql, new Object[]{userId}, Double.class);
+        Double totalPrice = jdbcTemplate.queryForObject(SQL_CALCULATE_TOTAL_PRICE,
+                new Object[]{userId}, Double.class);
         return totalPrice != null ? totalPrice : 0.0;
     }
 
     @Override
     public int getShoppingCartId(int userId) {
-        String sql = "SELECT shoppingCartId FROM ShoppingCart WHERE userId = ? AND IsActive = TRUE";
-        Integer id = jdbcTemplate.queryForObject(sql, new Object[]{userId}, Integer.class);
+        Integer id = jdbcTemplate.queryForObject(SQL_GET_CART_ID,
+                new Object[]{userId}, Integer.class);
         return id == null ? -1 : id;
     }
 }
