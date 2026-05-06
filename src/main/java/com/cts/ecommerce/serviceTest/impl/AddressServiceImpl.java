@@ -1,4 +1,4 @@
-package com.cts.ecommerce.service.impl;
+package com.cts.ecommerce.serviceTest.impl;
 
 import com.cts.ecommerce.entity.Address;
 import com.cts.ecommerce.exception.AddressNotFoundException;
@@ -6,7 +6,7 @@ import com.cts.ecommerce.exception.AddressCreationException;
 import com.cts.ecommerce.exception.AddressUpdateException;
 import com.cts.ecommerce.exception.AddressDeletionException;
 import com.cts.ecommerce.repository.AddressRepository;
-import com.cts.ecommerce.service.AddressService;
+import com.cts.ecommerce.serviceTest.AddressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;

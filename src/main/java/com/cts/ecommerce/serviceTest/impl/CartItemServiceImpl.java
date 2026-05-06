@@ -1,10 +1,10 @@
-package com.cts.ecommerce.service.impl;
+package com.cts.ecommerce.serviceTest.impl;
 
 import com.cts.ecommerce.entity.CartItem;
 import com.cts.ecommerce.entity.ShoppingCart;
 import com.cts.ecommerce.repository.CartItemRepository;
 import com.cts.ecommerce.repository.ShoppingCartRepository;
-import com.cts.ecommerce.service.CartItemService;
+import com.cts.ecommerce.serviceTest.CartItemService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

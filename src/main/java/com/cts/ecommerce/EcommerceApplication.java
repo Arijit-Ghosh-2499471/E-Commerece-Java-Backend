@@ -2,7 +2,9 @@ package com.cts.ecommerce;
 
 import com.cts.ecommerce.entity.*;
 import com.cts.ecommerce.exception.AddressNotFoundException;
-import com.cts.ecommerce.service.*;
+import com.cts.ecommerce.exception.AuthenticationFailedException;
+import com.cts.ecommerce.exception.UserNotFoundException;
+import com.cts.ecommerce.serviceTest.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -102,30 +104,33 @@ public class EcommerceApplication implements CommandLineRunner {
 		user.setRole("Customer");
 
 		userService.register(user);
-		log.info("Registration Successful. Please Login.");
+		//log.info("Registration Successful. Please Login.");
 
 	}
 
 	private void login(Scanner scanner) {
 
-		log.info("Enter Email:");
-		String email = scanner.nextLine();
+		try {
+			log.info("Enter Email:");
+			String email = scanner.nextLine();
 
-		log.info("Enter Password:");
-		String password = scanner.nextLine();
+			log.info("Enter Password:");
+			String password = scanner.nextLine();
 
-		if (!userService.login(email, password)) {
-			log.warn("Invalid Email or Password");
-			return;
-		}
+			if (!userService.login(email, password)) {
+				return;
+			}
 
-		loggedInUser = userService.getUserByEmail(email);
-		log.info("Welcome, {}", loggedInUser.getName());
+			loggedInUser = userService.getUserByEmail(email);
 
-		if ("Customer".equals(loggedInUser.getRole())) {
-			userDashboard(scanner);
-		} else {
-			adminDashboard(scanner);
+			if ("Customer".equals(loggedInUser.getRole())) {
+				userDashboard(scanner);
+			} else {
+				adminDashboard(scanner);
+			}
+
+		} catch (RuntimeException e ) {
+			log.warn(e.getMessage());
 		}
 	}
 

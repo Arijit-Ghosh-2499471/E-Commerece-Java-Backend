@@ -1,4 +1,4 @@
-package com.cts.ecommerce.service;
+package com.cts.ecommerce.serviceTest;
 
 import com.cts.ecommerce.entity.CartItem;
 

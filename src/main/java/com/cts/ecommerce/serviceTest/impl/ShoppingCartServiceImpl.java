@@ -1,8 +1,8 @@
-package com.cts.ecommerce.service.impl;
+package com.cts.ecommerce.serviceTest.impl;
 
 import com.cts.ecommerce.entity.ShoppingCart;
 import com.cts.ecommerce.repository.ShoppingCartRepository;
-import com.cts.ecommerce.service.ShoppingCartService;
+import com.cts.ecommerce.serviceTest.ShoppingCartService;
 import org.springframework.stereotype.Service;
 
 @Service
