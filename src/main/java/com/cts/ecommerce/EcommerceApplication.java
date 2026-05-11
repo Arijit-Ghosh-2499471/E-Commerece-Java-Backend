@@ -78,7 +78,7 @@ public class EcommerceApplication implements CommandLineRunner {
 				case 2 -> login(scanner);
 				case 0 -> {
 					log.info("Exiting Application...");
-					return;
+					System.exit(0);
 				}
 				default -> log.warn("Invalid Choice For Sign-In");
 			}
