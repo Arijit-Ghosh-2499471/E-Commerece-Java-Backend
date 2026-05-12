@@ -22,10 +22,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class ReviewRepositoryImpl implements ReviewRepository {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    @Autowired
+    public ReviewRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /** SQL query to insert a new review */
     private static final String SQL_INSERT =

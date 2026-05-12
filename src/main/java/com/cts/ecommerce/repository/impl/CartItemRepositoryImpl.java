@@ -6,6 +6,7 @@ import com.cts.ecommerce.exception.CartItemDeletionException;
 import com.cts.ecommerce.exception.CartItemNotFoundException;
 import com.cts.ecommerce.exception.CartItemUpdateException;
 import com.cts.ecommerce.repository.CartItemRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -22,7 +23,10 @@ public class CartItemRepositoryImpl implements CartItemRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    @Autowired
+    public CartItemRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /** SQL query to insert a new item into the cart */
     private static final String INSERT_ITEM_SQL =
@@ -43,10 +47,6 @@ public class CartItemRepositoryImpl implements CartItemRepository {
     /** SQL query to delete a cart item */
     private static final String DELETE_ITEM_SQL =
             "DELETE FROM CartItems WHERE ShoppingCartId = ? AND ProductId = ?";
-
-    public CartItemRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     /**
      * Adds a new item to the shopping cart.

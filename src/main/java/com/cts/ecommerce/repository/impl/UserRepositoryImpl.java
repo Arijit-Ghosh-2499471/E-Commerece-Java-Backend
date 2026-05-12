@@ -20,10 +20,12 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class UserRepositoryImpl implements UserRepository {
 
-    @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    @Autowired
+    public UserRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /** SQL query to insert a new user */
     private static final String INSERT_USER =

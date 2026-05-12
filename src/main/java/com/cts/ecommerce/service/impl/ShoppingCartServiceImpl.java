@@ -71,7 +71,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCart findActiveCardByUserId(int userId) {
         logger.debug("Fetching active cart for userId={}", userId);
-
         try {
             return shoppingCartRepository.findActiveCartByUserId(userId);
         } catch (Exception ex) {

@@ -18,10 +18,13 @@ import java.util.List;
 @Repository
 public class AddressRepositoryImpl implements AddressRepository {
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+    private final JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    @Autowired
+    public AddressRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
+
     /** SQL query to insert a new address */
     private static final String SQL_INSERT =
             "INSERT INTO Address(UserId, HouseNo, Area, City, State, Country, Pincode) VALUES(?,?,?,?,?,?,?)";

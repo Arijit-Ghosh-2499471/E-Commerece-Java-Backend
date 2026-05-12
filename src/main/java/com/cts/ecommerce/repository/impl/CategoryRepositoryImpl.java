@@ -29,7 +29,17 @@ public class CategoryRepositoryImpl implements CategoryRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    /**
+     * Constructs a new {@code CategoryRepositoryImpl} backed by the
+     * supplied {@link JdbcTemplate}.
+     *
+     * @param jdbcTemplate the Spring JDBC template used for all
+     *                     database access
+     */
+    @Autowired
+    public CategoryRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /** SQL query to insert a new category. */
     private static final String INSERT_CATEGORY_SQL =
@@ -56,18 +66,6 @@ public class CategoryRepositoryImpl implements CategoryRepository {
     /** SQL query to check whether a category with a given id exists. */
     private static final String COUNT_CATEGORY_BY_ID_SQL =
             "SELECT COUNT(*) FROM Category WHERE CategoryId=?";
-
-    /**
-     * Constructs a new {@code CategoryRepositoryImpl} backed by the
-     * supplied {@link JdbcTemplate}.
-     *
-     * @param jdbcTemplate the Spring JDBC template used for all
-     *                     database access
-     */
-    @Autowired
-    public CategoryRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     /**
      * Persists a new category.

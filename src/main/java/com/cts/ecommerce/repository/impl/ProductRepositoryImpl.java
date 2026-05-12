@@ -33,7 +33,17 @@ public class ProductRepositoryImpl implements ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    /**
+     * Constructs a new {@code ProductRepositoryImpl} backed by the
+     * supplied {@link JdbcTemplate}.
+     *
+     * @param jdbcTemplate the Spring JDBC template used for all
+     *                     database access
+     */
+    @Autowired
+    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /**
      * Common projection used by every {@code SELECT} in this repository.
@@ -84,18 +94,6 @@ public class ProductRepositoryImpl implements ProductRepository {
     /** SQL query to retrieve products whose price falls within a range. */
     private static final String SELECT_PRODUCTS_BY_PRICE_BETWEEN_SQL =
             SELECT_PRODUCT_BASE_SQL + "WHERE p.Price BETWEEN ? AND ? ORDER BY p.Price";
-
-    /**
-     * Constructs a new {@code ProductRepositoryImpl} backed by the
-     * supplied {@link JdbcTemplate}.
-     *
-     * @param jdbcTemplate the Spring JDBC template used for all
-     *                     database access
-     */
-    @Autowired
-    public ProductRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     /**
      * Persists a new product.

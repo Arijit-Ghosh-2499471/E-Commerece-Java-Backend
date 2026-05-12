@@ -18,7 +18,10 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    // SQL statements as constants
+    @Autowired
+    public ShoppingCartRepositoryImpl(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
+    }
 
     /** SQL query to find an active shopping cart for a user */
     private static final String SELECT_ACTIVE_CART_SQL =
@@ -31,11 +34,6 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
     /** SQL query to deactivate an existing shopping cart */
     private static final String DEACTIVATE_CART_SQL =
             "UPDATE ShoppingCart SET IsActive = false WHERE ShoppingCartId = ?";
-
-    @Autowired
-    public ShoppingCartRepositoryImpl(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
 
     /**
      * Retrieves the active shopping cart for a given user.
@@ -52,7 +50,7 @@ public class ShoppingCartRepositoryImpl implements ShoppingCartRepository {
                     userId
             );
         } catch (Exception ex) {
-            return null; // ✅ logic preserved
+            return null;
         }
     }
 

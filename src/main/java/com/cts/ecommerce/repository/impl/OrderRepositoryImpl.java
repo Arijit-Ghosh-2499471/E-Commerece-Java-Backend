@@ -4,6 +4,7 @@ import com.cts.ecommerce.entity.Order;
 import com.cts.ecommerce.exception.*;
 import com.cts.ecommerce.mappers.CartMapper;
 import com.cts.ecommerce.repository.OrderRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -21,13 +22,13 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
+    @Autowired
     public OrderRepositoryImpl(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     private final CartMapper cartMapper = new CartMapper();
 
-    // SQL constants
     /** SQL query to insert a new order */
     private static final String SQL_INSERT_ORDER =
             "INSERT INTO Orders (userId, totalPrice, shippingAddress, orderStatus, paymentStatus, shoppingCartId) VALUES (?, ?, ?, ?, ?, ?)";
